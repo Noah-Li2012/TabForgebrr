@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>TabForgebrr</title>
+  <title>TaSwap-For Pranksters</title>
   <meta charset="UTF-8" content="Fake favicon/title to prank whomever you want!">
   <link rel="icon" href="icon.png">
   <style>
@@ -237,7 +237,18 @@
 
     <!-- Section 3: Prank Message -->
     <section id="section-prank">
-      <div class="prank-message">Pranked!</div>
+      <div class="prank-message" id="prankMessage" tabindex="0" title="Right click to edit">Pranked!</div>
+      <!-- Edit Panel Popup -->
+      <div id="prankEditPanel" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:14px;box-shadow:0 4px 32px #00eaff44;padding:2em 2.2em;z-index:1001;min-width:260px;min-height:120px;align-items:center;justify-content:center;flex-direction:column;gap:1em;">
+        <h3 style="margin-top:0;margin-bottom:0.7em;font-size:1.2em;color:#00eaff;">Edit Prank Message</h3>
+        <input type="text" id="prankEditInput" style="font-size:1.1em;padding:0.4em 0.7em;border-radius:8px;border:1.5px solid #00eaff;width:100%;max-width:320px;margin-bottom:1.2em;">
+        <div style="display:flex;gap:1em;justify-content:center;">
+          <button id="prankEditSave" style="background:#00eaff;color:#fff;font-weight:bold;border:none;border-radius:8px;padding:0.5em 1.2em;font-size:1em;cursor:pointer;">Save</button>
+          <button id="prankEditCancel" style="background:#e0e0e0;color:#2563eb;font-weight:bold;border:none;border-radius:8px;padding:0.5em 1.2em;font-size:1em;cursor:pointer;">Cancel</button>
+        </div>
+      </div>
+      <!-- Overlay for popup -->
+      <div id="prankEditOverlay" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(0,238,255,0.13);z-index:1000;"></div>
     </section>
   </div>
   <!-- About Panel -->
@@ -561,8 +572,47 @@
       reader.readAsDataURL(file);
     });
 
+    // Prank Message: custom message logic
+    const prankMessage = document.getElementById('prankMessage');
+    const prankEditPanel = document.getElementById('prankEditPanel');
+    const prankEditInput = document.getElementById('prankEditInput');
+    const prankEditSave = document.getElementById('prankEditSave');
+    const prankEditCancel = document.getElementById('prankEditCancel');
+    const prankEditOverlay = document.getElementById('prankEditOverlay');
+
+    prankMessage.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      prankEditInput.value = prankMessage.textContent;
+      prankEditPanel.style.display = 'flex';
+      prankEditOverlay.style.display = 'block';
+      prankEditInput.focus();
+    });
+
+    prankEditSave.onclick = function() {
+      prankMessage.textContent = prankEditInput.value.trim() || "Pranked!";
+      prankEditPanel.style.display = 'none';
+      prankEditOverlay.style.display = 'none';
+    };
+
+    prankEditCancel.onclick = function() {
+      prankEditPanel.style.display = 'none';
+      prankEditOverlay.style.display = 'none';
+    };
+
+    prankEditOverlay.onclick = function() {
+      prankEditPanel.style.display = 'none';
+      prankEditOverlay.style.display = 'none';
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (prankEditPanel.style.display === 'flex' && e.key === 'Escape') {
+        prankEditPanel.style.display = 'none';
+        prankEditOverlay.style.display = 'none';
+      }
+    });
+
     // Set initial title and favicon
-    document.title = "TabForgebrr for Pranksters";
+    document.title = "TabForge for Pranksters";
     setFavicon("icon.png"); // fun troll emoji favicon
   </script>
 </body>
